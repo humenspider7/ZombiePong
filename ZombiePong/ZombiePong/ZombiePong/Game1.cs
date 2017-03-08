@@ -61,9 +61,12 @@ namespace ZombiePong
 
             paddle1 = new Sprite(new Vector2(20, 20), spritesheet, new Rectangle(0, 516, 25, 150), Vector2.Zero);
             paddle2 = new Sprite(new Vector2(970, 20), spritesheet, new Rectangle(32, 516, 25, 150), Vector2.Zero);
-            ball = new Sprite(new Vector2(700, 350), spritesheet, new Rectangle(76, 510, 40, 40), new Vector2(30, 0));
+            ball = new Sprite(new Vector2(700, 350), spritesheet, new Rectangle(76, 510, 40, 40), new Vector2(200, 60));
 
+            //Spawn zombie
             SpawnZombie(new Vector2(400, 400), new Vector2(-20, 0));
+            SpawnZombie(new Vector2(420, 420), new Vector2(20, 0));
+            SpawnZombie(new Vector2(100, 100), new Vector2(50, 23));
         }
 
         /// <summary>
@@ -98,6 +101,25 @@ namespace ZombiePong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            //Reflections
+            if (paddle1.IsBoxColliding(ball.BoundingBoxRect))
+            {
+                ball.Velocity *= new Vector2(-1, 1);
+            }
+
+            if (paddle2.IsBoxColliding(ball.BoundingBoxRect))
+            {
+                ball.Velocity *= new Vector2(-1, 1);
+            }
+
+           
+            //Mouse to move.  Also to prevent the paddle from going off screen.
+            MouseState ms = Mouse.GetState();
+            paddle1.Location = new Vector2(paddle1.Location.X, MathHelper.Clamp(ms.Y, 0, (float)this.Window.ClientBounds.Height-paddle1.BoundingBoxRect.Height));
+            paddle2.Location = new Vector2(paddle2.Location.X, MathHelper.Clamp(ball.Center.Y, 0, (float)this.Window.ClientBounds.Height - paddle1.BoundingBoxRect.Height));
+            ball.Location = new Vector2(ball.Location.X, MathHelper.Clamp(ball.Center.Y, 0, (float)this.Window.ClientBounds.Height - ball.BoundingBoxRect.Height));
+
+
             // TODO: Add your update logic here
             ball.Update(gameTime);
 
@@ -105,8 +127,18 @@ namespace ZombiePong
             {
                 zombies[i].Update(gameTime);
 
+                //Direction zombies face.
                 // Zombie logic goes here.. 
-                zombies[i].FlipHorizontal = false;
+                if (zombies[i].Velocity.X < 0)
+                    zombies[i].FlipHorizontal = false;
+
+                if (zombies[i].Velocity.X > 0)
+                    zombies[i].FlipHorizontal = true;
+
+
+
+
+
             }
 
             base.Update(gameTime);
