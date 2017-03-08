@@ -64,9 +64,10 @@ namespace ZombiePong
             ball = new Sprite(new Vector2(700, 350), spritesheet, new Rectangle(76, 510, 40, 40), new Vector2(200, 60));
 
             //Spawn zombie
-            SpawnZombie(new Vector2(400, 400), new Vector2(-20, 0));
-            SpawnZombie(new Vector2(420, 420), new Vector2(20, 0));
-            SpawnZombie(new Vector2(100, 100), new Vector2(50, 23));
+            SpawnZombie(new Vector2(600, 100), new Vector2(-20, 0));
+            SpawnZombie(new Vector2(100, 600), new Vector2(20, 0));
+            SpawnZombie(new Vector2(100, 100), new Vector2(50, 0));
+            SpawnZombie(new Vector2(600, 600), new Vector2(-50, 0));
         }
 
         /// <summary>
