@@ -68,6 +68,10 @@ namespace ZombiePong
             SpawnZombie(new Vector2(100, 600), new Vector2(20, 0));
             SpawnZombie(new Vector2(100, 100), new Vector2(50, 0));
             SpawnZombie(new Vector2(600, 600), new Vector2(-50, 0));
+
+            //scores
+            int score1 = 0;
+            int score2 = 0;
         }
 
         /// <summary>
@@ -113,12 +117,19 @@ namespace ZombiePong
                 ball.Velocity *= new Vector2(-1, 1);
             }
 
-           
-            //Mouse to move.  Also to prevent the paddle from going off screen.
-            MouseState ms = Mouse.GetState();
+            if (ball.Location.X < -32)
+            {
+                ball.Location = new Vector2(300, 400);
+                ball.Velocity = new Vector2(280, 80);
+            }
+
+            if (ball.Location.Y < 0 || ball.Location.Y + ball.BoundingBoxRect.Height > this.Window.ClientBounds.Height)
+                ball.Velocity *= new Vector2(1, -1);
+
+                //Mouse to move.  Also to prevent the paddle from going off screen.
+                MouseState ms = Mouse.GetState();
             paddle1.Location = new Vector2(paddle1.Location.X, MathHelper.Clamp(ms.Y, 0, (float)this.Window.ClientBounds.Height-paddle1.BoundingBoxRect.Height));
             paddle2.Location = new Vector2(paddle2.Location.X, MathHelper.Clamp(ball.Center.Y, 0, (float)this.Window.ClientBounds.Height - paddle1.BoundingBoxRect.Height));
-            ball.Location = new Vector2(ball.Location.X, MathHelper.Clamp(ball.Center.Y, 0, (float)this.Window.ClientBounds.Height - ball.BoundingBoxRect.Height));
 
 
             // TODO: Add your update logic here
@@ -137,8 +148,12 @@ namespace ZombiePong
                     zombies[i].FlipHorizontal = true;
 
 
+                if (zombies[i].Location.X < 100 || zombies[i].Location.X > 700)
+                    zombies[i].Velocity *= new Vector2(-1, 1);
 
-
+                zombies[i].CollisionRadius = 25;
+                if (zombies[i].IsCircleColliding(ball.Center, 20))
+                    ball.Velocity *= new Vector2(-1, -1);
 
             }
 
