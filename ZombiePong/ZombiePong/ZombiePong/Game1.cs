@@ -22,6 +22,10 @@ namespace ZombiePong
 
         Sprite paddle1, paddle2, ball;
 
+        //scores
+        int score1 = 0;
+        int score2 = 0;
+
         List<Sprite> zombies = new List<Sprite>();
 
         public Game1()
@@ -69,9 +73,7 @@ namespace ZombiePong
             SpawnZombie(new Vector2(100, 100), new Vector2(50, 0));
             SpawnZombie(new Vector2(600, 600), new Vector2(-50, 0));
 
-            //scores
-            int score1 = 0;
-            int score2 = 0;
+
         }
 
         /// <summary>
@@ -106,6 +108,10 @@ namespace ZombiePong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+
+            //Window Title
+            Window.Title = "Player 1: " + score1 + " Player 2: " + score2;
+
             //Reflections
             if (paddle1.IsBoxColliding(ball.BoundingBoxRect))
             {
@@ -119,8 +125,17 @@ namespace ZombiePong
 
             if (ball.Location.X < -32)
             {
-                ball.Location = new Vector2(300, 400);
-                ball.Velocity = new Vector2(280, 80);
+                ball.Location = new Vector2(512, 384);
+                ball.Velocity = new Vector2(200,60);
+                score2++;
+            }
+
+            if (ball.Location.X > 1010)
+            {
+                ball.Location = new Vector2(512, 384);
+                ball.Velocity = new Vector2(-200, -60);
+                score1++;
+
             }
 
             if (ball.Location.Y < 0 || ball.Location.Y + ball.BoundingBoxRect.Height > this.Window.ClientBounds.Height)
