@@ -123,6 +123,7 @@ namespace ZombiePong
                 ball.Velocity *= new Vector2(-1, 1);
             }
 
+            //If the AI scores, the AI gets a point and the ball respawns and goes toward the AI.
             if (ball.Location.X < -32)
             {
                 ball.Location = new Vector2(512, 384);
@@ -130,6 +131,7 @@ namespace ZombiePong
                 score2++;
             }
 
+            //If you score, you get a point and the ball respawns and goes toward you.
             if (ball.Location.X > 1010)
             {
                 ball.Location = new Vector2(512, 384);
